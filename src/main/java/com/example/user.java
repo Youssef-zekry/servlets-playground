@@ -17,6 +17,8 @@ public class user {
 		this.mobile_number = mobile_number;
 		this.mail = mail;
 	}
+	public user() {
+	}
 	public int getUser_id() {
 		return user_id;
 	}
@@ -52,6 +54,12 @@ public class user {
 	}
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+	@Override
+	public String toString() {
+		return "user [user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name + ", birthdate="
+				+ birthdate + ", mobile_number=" + mobile_number + ", mail=" + mail + "]";
 	} 
+
 
 }
