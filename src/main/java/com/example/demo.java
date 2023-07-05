@@ -22,23 +22,28 @@ import com.google.gson.JsonArray;
 @WebServlet(name = "demo", urlPatterns = "/")
 
 public class demo extends HttpServlet {
+
+	private static Integer updateCount = 0;
+
 	// new datasource object
 	PGSimpleDataSource dataSource = new PGSimpleDataSource();
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		PrintWriter out = resp.getWriter();
+	
+	public demo() {
 		// database connection properties
 		dataSource.setServerNames(new String[] { "localhost" });
 		dataSource.setPortNumbers(new int[] { 5432 });
 		dataSource.setDatabaseName("postgres");
 		dataSource.setUser("postgres");
 		dataSource.setPassword("2111976");
+	}
 
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		PrintWriter out = resp.getWriter();
 		Gson gson = new Gson();
-
 		Connection connection = null;
+
 		try {
 			connection = dataSource.getConnection();
 			Statement stmt = connection.createStatement();
@@ -68,5 +73,24 @@ public class demo extends HttpServlet {
 					+ e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			Connection connection = null;
+			PrintWriter out = response.getWriter();
+			try {
+				connection = dataSource.getConnection();
+				Statement stmt = connection.createStatement();
+				String insert = "insert into users(first_name,last_name,birthdate,mobile_number,mail) values('sara','ali','2015-8-9','01346546865','amr@gmail.com');";
+				int rowsAffected = stmt.executeUpdate(insert);
+				updateCount+= rowsAffected;
+				out.println(updateCount);
+
+			}  catch (SQLException e) {
+			out.println( e.getMessage());
+			e.printStackTrace();
+		}
+	
 	}
 }
