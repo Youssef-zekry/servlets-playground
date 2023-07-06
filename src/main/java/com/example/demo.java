@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -92,16 +93,14 @@ public class demo extends HttpServlet {
 
 		try {
 			inputmodel input = gson.fromJson(new InputStreamReader(request.getInputStream()), inputmodel.class);
-			System.out.println(input);
 
-			String sql = "insert into users (first_name, last_name, birthdate, mobile_number, mail ) values (?,?,?,?,?)";
 			Connection connection = dataSource.getConnection();
-			PreparedStatement stmt = connection.prepareStatement(sql);
+			CallableStatement stmt = connection.prepareCall("{call add_user(?,?,?,?,?)}");
 			for (user user : input.getUsers()) {
 				log.info(user.toString());
 				stmt.setString(1, user.getFirst_name());
 				stmt.setString(2, user.getLast_name());
-				stmt.setDate(3, java.sql.Date.valueOf(user.getBirthdate()));
+				stmt.setObject(3,user.getBirthdate());
 				stmt.setString(4, user.getMobile_number());
 				stmt.setString(5, user.getMail());
 				stmt.executeUpdate();
