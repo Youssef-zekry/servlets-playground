@@ -6,10 +6,10 @@ public class user {
 	int user_id;
 	String first_name; 
 	String last_name; 
-	LocalDate birthdate; 
+	String birthdate; 
 	String mobile_number; 
 	String mail;
-	public user(int user_id, String first_name, String last_name, LocalDate birthdate, String mobile_number, String mail) {
+	public user(int user_id, String first_name, String last_name, String birthdate, String mobile_number, String mail) {
 		this.user_id = user_id;
 		this.first_name = first_name;
 		this.last_name = last_name;
@@ -38,9 +38,9 @@ public class user {
 		this.last_name = last_name;
 	}
 	public LocalDate getBirthdate() {
-		return birthdate;
+		return LocalDate.parse(birthdate);
 	}
-	public void setBirthdate(LocalDate birthdate) {
+	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
 	public String getMobile_number() {

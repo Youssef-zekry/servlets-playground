@@ -3,11 +3,15 @@ package com.example;
 import java.util.List;
 
 public class inputmodel {
+	@Override
+	public String toString() {
+		return "inputmodel [username=" + username + ", password=" + password + ", data=" + data + "]";
+	}
 	String username;
 	String password;
-	List<user> users;
+	List<user> data;
 
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -21,9 +25,10 @@ public class inputmodel {
 		this.password = password;
 	}
 	public List<user> getUsers() {
-		return users;
+		return data;
 	}
 	public void setUsers(List<user> users) {
-		this.users = users;
+		this.data = users;
 	}
+	
 }
