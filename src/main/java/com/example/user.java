@@ -1,15 +1,15 @@
 package com.example;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class user {
 	int user_id;
 	String first_name; 
 	String last_name; 
-	Date birthdate; 
+	LocalDate birthdate; 
 	String mobile_number; 
 	String mail;
-	public user(int user_id, String first_name, String last_name, Date birthdate, String mobile_number, String mail) {
+	public user(int user_id, String first_name, String last_name, LocalDate birthdate, String mobile_number, String mail) {
 		this.user_id = user_id;
 		this.first_name = first_name;
 		this.last_name = last_name;
@@ -37,10 +37,10 @@ public class user {
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
 	}
-	public Date getBirthdate() {
+	public LocalDate getBirthdate() {
 		return birthdate;
 	}
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
 	}
 	public String getMobile_number() {
