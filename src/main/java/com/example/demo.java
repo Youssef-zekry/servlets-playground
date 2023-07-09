@@ -48,43 +48,43 @@ public class demo extends HttpServlet {
 		dataSource.setPassword("2111976");
 	}
 
-	// @Override
-	// protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-	// 	PrintWriter out = resp.getWriter();
-	// 	Gson gson = new Gson();
-	// 	Connection connection = null;
+		PrintWriter out = resp.getWriter();
+		Gson gson = new Gson();
+		Connection connection = null;
 
-	// 	try {
-	// 		connection = dataSource.getConnection();
-	// 		Statement stmt = connection.createStatement();
-	// 		String sql = "select u.user_id, u.first_name, u.last_name, u.birthdate, u.mobile_number, u.mail from users u";
-	// 		ResultSet rs = stmt.executeQuery(sql);
+		try {
+			connection = dataSource.getConnection();
+			Statement stmt = connection.createStatement();
+			String sql = "select u.user_id, u.first_name, u.last_name, u.birthdate, u.mobile_number, u.mail from users u";
+			ResultSet rs = stmt.executeQuery(sql);
 
-	// 		String result = "";
-	// 		List<user> users = new ArrayList<>();
+			String result = "";
+			List<user> users = new ArrayList<>();
 
-	// 		while (rs.next()) {
-	// 			user u = new user(
-	// 					rs.getInt(1),
-	// 					rs.getString(2),
-	// 					rs.getString(3),
-	// 					rs.getDate(4).toLocalDate(),
-	// 					rs.getString(5),
-	// 					rs.getString(6));
-	// 			users.add(u);
-	// 			result = result + u.toString();
-	// 		}
+			while (rs.next()) {
+				user u = new user(
+						rs.getInt(1),
+						rs.getString(2),
+						rs.getString(3),
+						rs.getDate(4).toString(),
+						rs.getString(5),
+						rs.getString(6));
+				users.add(u);
+				result = result + u.toString();
+			}
 
-	// 		JsonArray a = gson.toJsonTree(users).getAsJsonArray();
-	// 		resp.getWriter().write(a.toString());
+			JsonArray a = gson.toJsonTree(users).getAsJsonArray();
+			resp.getWriter().write(a.toString());
 
-	// 	} catch (SQLException e) {
-	// 		out.println("my message -> failed to connect to database: "
-	// 				+ e.getMessage());
-	// 		e.printStackTrace();
-	// 	}
-	// }
+		} catch (SQLException e) {
+			out.println("my message -> failed to connect to database: "
+					+ e.getMessage());
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
