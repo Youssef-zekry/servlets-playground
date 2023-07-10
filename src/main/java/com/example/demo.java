@@ -50,7 +50,6 @@ public class demo extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
 		PrintWriter out = resp.getWriter();
 		Gson gson = new Gson();
 		Connection connection = null;
@@ -87,8 +86,8 @@ public class demo extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		Gson gson = new Gson();
 
 		try {
@@ -100,14 +99,14 @@ public class demo extends HttpServlet {
 				log.info(user.toString());
 				stmt.setString(1, user.getFirst_name());
 				stmt.setString(2, user.getLast_name());
-				stmt.setObject(3,user.getBirthdate());
+				stmt.setObject(3, user.getBirthdate());
 				stmt.setString(4, user.getMobile_number());
 				stmt.setString(5, user.getMail());
 				stmt.executeUpdate();
 			}
 		} catch (SQLException e) {
 			log.info(e.getMessage());
-		} catch(Exception e) {
+		} catch (Exception e) {
 			log.info(e.getMessage());
 		}
 	}
