@@ -91,19 +91,20 @@ public class demo extends HttpServlet {
 		Gson gson = new Gson();
 
 		try {
-			inputmodel input = gson.fromJson(new InputStreamReader(request.getInputStream()), inputmodel.class);
+			user user = gson.fromJson(new InputStreamReader(request.getInputStream()), user.class);
 
 			Connection connection = dataSource.getConnection();
 			CallableStatement stmt = connection.prepareCall("{call add_user(?,?,?,?,?)}");
-			for (user user : input.getUsers()) {
-				log.info(user.toString());
+			// for (user user : input.getUsers()) {
+				// log.info(user.toString());
+				// user user = new user();
 				stmt.setString(1, user.getFirst_name());
 				stmt.setString(2, user.getLast_name());
 				stmt.setObject(3, user.getBirthdate());
 				stmt.setString(4, user.getMobile_number());
 				stmt.setString(5, user.getMail());
 				stmt.executeUpdate();
-			}
+			// }
 		} catch (SQLException e) {
 			log.info(e.getMessage());
 		} catch (Exception e) {
