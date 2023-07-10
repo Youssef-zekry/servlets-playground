@@ -1,40 +1,28 @@
 package com.example;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.postgresql.ds.PGSimpleDataSource;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @WebServlet(name = "demo", urlPatterns = "/")
 
 public class demo extends HttpServlet {
 
-	private static Logger log = Logger.getLogger(demo.class.getName());
 	private static HikariDataSource dataSource = new HikariDataSource();
 
 	@Override
@@ -75,7 +63,7 @@ public class demo extends HttpServlet {
 			stmt.close();
 			rs.close();
 		} catch (SQLException e) {
-			resp.getWriter().write("{\"status\":500}");
+			resp.getWriter().write("{\"status\":500} " +"\n" + "Something went wrong while getting data from database");
 		}
 	}
 
@@ -86,10 +74,9 @@ public class demo extends HttpServlet {
 			throws ServletException, IOException {
 		Gson gson = new Gson();
 
-		try {
+		try (Connection connection = dataSource.getConnection();) {
 			user user = gson.fromJson(new InputStreamReader(request.getInputStream()), user.class);
 
-			Connection connection = dataSource.getConnection();
 			CallableStatement stmt = connection.prepareCall("{call add_user(?,?,?,?,?)}");
 			stmt.setString(1, user.getFirst_name());
 			stmt.setString(2, user.getLast_name());
@@ -97,11 +84,12 @@ public class demo extends HttpServlet {
 			stmt.setString(4, user.getMobile_number());
 			stmt.setString(5, user.getMail());
 			stmt.executeUpdate();
-			// }
+
+			stmt.close();
 		} catch (SQLException e) {
-			log.info(e.getMessage());
+			response.getWriter().write("{\"status\":500} " +"\n" + "Something went wrong while inserting data into database");
 		} catch (Exception e) {
-			log.info(e.getMessage());
+			response.getWriter().write("{\"status\":500} " +"\n" + "Something went wrong outside database scope");
 		}
 	}
 }
