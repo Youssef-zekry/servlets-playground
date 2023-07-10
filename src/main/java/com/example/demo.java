@@ -27,35 +27,29 @@ import org.postgresql.ds.PGSimpleDataSource;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 @WebServlet(name = "demo", urlPatterns = "/")
 
 public class demo extends HttpServlet {
 
-	private static Integer updateCount = 0;
-
 	private static Logger log = Logger.getLogger(demo.class.getName());
+	private static HikariDataSource dataSource = new HikariDataSource();
 
-	// new datasource object
-	PGSimpleDataSource dataSource = new PGSimpleDataSource();
-
-	public demo() {
-		// database connection properties
-		dataSource.setServerNames(new String[] { "localhost" });
-		dataSource.setPortNumbers(new int[] { 5432 });
-		dataSource.setDatabaseName("postgres");
-		dataSource.setUser("postgres");
+	@Override
+	public void init() {
+		System.out.println("from init method");
+		dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/postgres");
+		dataSource.setUsername("postgres");
 		dataSource.setPassword("2111976");
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		PrintWriter out = resp.getWriter();
 		Gson gson = new Gson();
-		Connection connection = null;
 
-		try {
-			connection = dataSource.getConnection();
+		try (Connection connection = dataSource.getConnection();) {
 			Statement stmt = connection.createStatement();
 			String sql = "select u.user_id, u.first_name, u.last_name, u.birthdate, u.mobile_number, u.mail from users u";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -78,12 +72,14 @@ public class demo extends HttpServlet {
 			JsonArray a = gson.toJsonTree(users).getAsJsonArray();
 			resp.getWriter().write(a.toString());
 
+			stmt.close();
+			rs.close();
 		} catch (SQLException e) {
-			out.println("my message -> failed to connect to database: "
-					+ e.getMessage());
-			e.printStackTrace();
+			resp.getWriter().write("{\"status\":500}");
 		}
 	}
+
+
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -95,15 +91,12 @@ public class demo extends HttpServlet {
 
 			Connection connection = dataSource.getConnection();
 			CallableStatement stmt = connection.prepareCall("{call add_user(?,?,?,?,?)}");
-			// for (user user : input.getUsers()) {
-				// log.info(user.toString());
-				// user user = new user();
-				stmt.setString(1, user.getFirst_name());
-				stmt.setString(2, user.getLast_name());
-				stmt.setObject(3, user.getBirthdate());
-				stmt.setString(4, user.getMobile_number());
-				stmt.setString(5, user.getMail());
-				stmt.executeUpdate();
+			stmt.setString(1, user.getFirst_name());
+			stmt.setString(2, user.getLast_name());
+			stmt.setObject(3, user.getBirthdate());
+			stmt.setString(4, user.getMobile_number());
+			stmt.setString(5, user.getMail());
+			stmt.executeUpdate();
 			// }
 		} catch (SQLException e) {
 			log.info(e.getMessage());
