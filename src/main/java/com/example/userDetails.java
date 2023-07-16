@@ -1,30 +1,34 @@
 package com.example;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 public class userDetails {
-	 
+	private int status_code;
+	private String message;
 	private String firstName;
     private String lastName;
-    private String birthdate;
+    private Date birthdate;
     private String mail;
     private String gender;
     private String mobile;
     private String address;
     private BigDecimal balance;
 	
-	public userDetails(String firstName, String lastName, String birthdate, String mail, String gender, String mobile,
-			String address, BigDecimal balance) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.birthdate = birthdate;
-		this.mail = mail;
-		this.gender = gender;
-		this.mobile = mobile;
-		this.address = address;
-		this.balance = balance;
+	public userDetails(int status_code, String message, String firstName, String lastName, Date birthdate,
+		String mail, String gender, String mobile, String address, BigDecimal balance) {
+	this.status_code = status_code;
+	this.message = message;
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.birthdate = birthdate;
+	this.mail = mail;
+	this.gender = gender;
+	this.mobile = mobile;
+	this.address = address;
+	this.balance = balance;
 	}
-
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -41,11 +45,11 @@ public class userDetails {
 		this.lastName = lastName;
 	}
 
-	public String getBirthdate() {
+	public Date getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(String birthdate) {
+	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
 
@@ -87,6 +91,22 @@ public class userDetails {
 
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
+	}
+
+	public int getStatus_code() {
+		return status_code;
+	}
+
+	public void setStatus_code(int status_code) {
+		this.status_code = status_code;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
 }
