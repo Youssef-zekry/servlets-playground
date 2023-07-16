@@ -6,15 +6,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.UUID;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.postgresql.ds.PGSimpleDataSource;
-
 import com.google.gson.Gson;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -22,8 +22,8 @@ import com.zaxxer.hikari.HikariDataSource;
 
 public class demo extends HttpServlet {
 
-	// PGSimpleDataSource dataSource = new PGSimpleDataSource();
 	private static HikariDataSource dataSource = new HikariDataSource();
+	private final long sessionPeriod = 7200000;
 	@Override
 	public void init() {
 		dataSource.setDriverClassName("org.postgresql.Driver");
@@ -32,26 +32,12 @@ public class demo extends HttpServlet {
 		dataSource.setPassword("2111976");
 	}
 
-	public demo() {
-	}
-	
-	
-	// @Override
-	// public void init() {
-	// 	dataSource.setServerNames(new String[] { "localhost" });
-	// 	dataSource.setPortNumbers(new int[] { 5432 });
-	// 	dataSource.setDatabaseName("sample_db");
-	// 	dataSource.setCurrentSchema("public");
-	// 	dataSource.setUser("postgres");
-	// 	dataSource.setPassword("2111976");
-	// }
-
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("user_id") == null) {
+		HttpSession session = request.getSession();
+		if (session == null || session.getAttribute("user_id").equals(-1) || session.getAttribute("user_id") == null) {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
@@ -94,9 +80,13 @@ public class demo extends HttpServlet {
 		String mail = request.getParameter("mail");
 		String password = request.getParameter("password");
 		int user_id = authenticateUser(mail, password);
+		String token = UUID.randomUUID().toString();
 
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession();
 		session.setAttribute("user_id", user_id);
+		session.setAttribute("token", token);
+		session.setAttribute("creation_time", new Date().getTime());
+		session.setAttribute("expiry_time", new Date().getTime() + sessionPeriod);
 	}
 
 	private int authenticateUser(String mail, String password) {
