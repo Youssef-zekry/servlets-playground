@@ -16,22 +16,35 @@ import javax.servlet.http.HttpSession;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import com.google.gson.Gson;
+import com.zaxxer.hikari.HikariDataSource;
 
 @WebServlet(name = "demo", urlPatterns = "/")
 
 public class demo extends HttpServlet {
 
-	PGSimpleDataSource dataSource = new PGSimpleDataSource();
-
+	// PGSimpleDataSource dataSource = new PGSimpleDataSource();
+	private static HikariDataSource dataSource = new HikariDataSource();
 	@Override
 	public void init() {
-		dataSource.setServerNames(new String[] { "localhost" });
-		dataSource.setPortNumbers(new int[] { 5432 });
-		dataSource.setDatabaseName("sample_db");
-		dataSource.setCurrentSchema("public");
-		dataSource.setUser("postgres");
+		dataSource.setDriverClassName("org.postgresql.Driver");
+		dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/sample_db");
+		dataSource.setUsername("postgres");
 		dataSource.setPassword("2111976");
 	}
+
+	public demo() {
+	}
+	
+	
+	// @Override
+	// public void init() {
+	// 	dataSource.setServerNames(new String[] { "localhost" });
+	// 	dataSource.setPortNumbers(new int[] { 5432 });
+	// 	dataSource.setDatabaseName("sample_db");
+	// 	dataSource.setCurrentSchema("public");
+	// 	dataSource.setUser("postgres");
+	// 	dataSource.setPassword("2111976");
+	// }
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
