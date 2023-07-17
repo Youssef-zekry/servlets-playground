@@ -14,21 +14,27 @@ public class userDetails {
     private String mobile;
     private String address;
     private BigDecimal balance;
+	private int userid;
+	private String token;
 	
-	public userDetails(int status_code, String message, String firstName, String lastName, Date birthdate,
-		String mail, String gender, String mobile, String address, BigDecimal balance) {
-	this.status_code = status_code;
-	this.message = message;
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.birthdate = birthdate;
-	this.mail = mail;
-	this.gender = gender;
-	this.mobile = mobile;
-	this.address = address;
-	this.balance = balance;
+
+	
+	public userDetails(int status_code, String message, String firstName, String lastName, Date birthdate, String mail,
+			String gender, String mobile, String address, BigDecimal balance, int userid, String token) {
+		this.status_code = status_code;
+		this.message = message;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.birthdate = birthdate;
+		this.mail = mail;
+		this.gender = gender;
+		this.mobile = mobile;
+		this.address = address;
+		this.balance = balance;
+		this.userid = userid;
+		this.token = token;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -107,6 +113,22 @@ public class userDetails {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public int getUserid() {
+		return userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 }

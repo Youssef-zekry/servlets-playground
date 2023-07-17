@@ -12,9 +12,11 @@ public class user {
 	char gender;
 	String mobile;
 	String address;
+	String token;
+
 
 	public user(int user_id, String first_name, String last_name, String birthdate, String mail, String password,
-			char gender, String mobile, String address) {
+			char gender, String mobile, String address, String token) {
 		this.user_id = user_id;
 		this.first_name = first_name;
 		this.last_name = last_name;
@@ -24,6 +26,7 @@ public class user {
 		this.gender = gender;
 		this.mobile = mobile;
 		this.address = address;
+		this.token = token;
 	}
 
 	public user() {
@@ -101,11 +104,19 @@ public class user {
 		this.address = address;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
 		return "user [user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name + ", birthdate="
 				+ birthdate + ", mail=" + mail + ", password=" + password + ", gender=" + gender + ", mobile=" + mobile
-				+ ", address=" + address + "]";
+				+ ", address=" + address + ", token=" + token + "]";
 	}
 
 
