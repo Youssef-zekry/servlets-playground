@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -28,14 +29,17 @@ public class demo extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		Gson gson = new Gson();
+		user input = gson.fromJson(new InputStreamReader(request.getInputStream()), user.class);
 
-		String mail = request.getParameter("mail");
-		String password = request.getParameter("password");
+		// String mail = request.getParameter("mail");
+		// String password = request.getParameter("password");
 
 		try (Connection connection = dataSource.getConnection()) {
 			CallableStatement stmt = connection.prepareCall("{call api_login(?,?)}");
-			stmt.setString(1, mail);
-			stmt.setString(2, password);
+			stmt.setString(1, input.getMail());
+			stmt.setString(2, input.getPassword());
 			ResultSet rs = stmt.executeQuery();
 
 			userDetails userDetails = null;
@@ -50,11 +54,12 @@ public class demo extends HttpServlet {
 						rs.getString("gender"),
 						rs.getString("mobile"),
 						rs.getString("address"),
-						rs.getBigDecimal("balance"));
+						rs.getBigDecimal("balance"),
+						rs.getInt("userid"),
+						rs.getString("token"));
 			}
 			stmt.close();
 
-			Gson gson = new Gson();
 			response.getWriter().write(gson.toJson(userDetails));
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
