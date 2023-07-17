@@ -17,7 +17,6 @@ import com.zaxxer.hikari.HikariDataSource;
 public class demo extends HttpServlet {
 
 	private static HikariDataSource dataSource = new HikariDataSource();
-	private final long sessionPeriod = 7200000;
 
 	@Override
 	public void init() {
@@ -34,7 +33,7 @@ public class demo extends HttpServlet {
 		String password = request.getParameter("password");
 
 		try (Connection connection = dataSource.getConnection()) {
-			CallableStatement stmt = connection.prepareCall("{call get_user_details(?,?)}");
+			CallableStatement stmt = connection.prepareCall("{call api_login(?,?)}");
 			stmt.setString(1, mail);
 			stmt.setString(2, password);
 			ResultSet rs = stmt.executeQuery();
