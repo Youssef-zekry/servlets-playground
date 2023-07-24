@@ -33,9 +33,6 @@ public class demo extends HttpServlet {
 		Gson gson = new Gson();
 		user input = gson.fromJson(new InputStreamReader(request.getInputStream()), user.class);
 
-		// String mail = request.getParameter("mail");
-		// String password = request.getParameter("password");
-
 		try (Connection connection = dataSource.getConnection()) {
 			CallableStatement stmt = connection.prepareCall("{call api_login(?,?)}");
 			stmt.setString(1, input.getMail());

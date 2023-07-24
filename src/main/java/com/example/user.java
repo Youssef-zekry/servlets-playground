@@ -13,7 +13,9 @@ public class user {
 	String mobile;
 	String address;
 	String token;
-
+	String answer;
+	int question_id;
+	int role_id;
 
 	public user(int user_id, String first_name, String last_name, String birthdate, String mail, String password,
 			char gender, String mobile, String address, String token) {
@@ -112,6 +114,30 @@ public class user {
 		this.token = token;
 	}
 
+	public int getQuestion_id() {
+		return question_id;
+	}
+
+	public void setQuestion_id(int question_id) {
+		this.question_id = question_id;
+	}
+
+	public int getRole_id() {
+		return role_id;
+	}
+
+	public void setRole_id(int role_id) {
+		this.role_id = role_id;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+	
 	@Override
 	public String toString() {
 		return "user [user_id=" + user_id + ", first_name=" + first_name + ", last_name=" + last_name + ", birthdate="
