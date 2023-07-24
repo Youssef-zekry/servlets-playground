@@ -12,7 +12,7 @@ public class userDetails {
     private String mail;
     private String gender;
     private String mobile;
-    private String address;
+	private String address;
     private BigDecimal balance;
 	private int userid;
 	private String token;
@@ -34,6 +34,12 @@ public class userDetails {
 		this.userid = userid;
 		this.token = token;
 	}
+	
+	 public userDetails(int status_code, String message) {
+		this.status_code = status_code;
+		this.message = message;
+	}
+
 
 	public String getFirstName() {
 		return firstName;
