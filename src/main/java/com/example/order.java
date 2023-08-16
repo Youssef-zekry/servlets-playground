@@ -23,7 +23,7 @@ private static HikariDataSource dataSource = new HikariDataSource();
 	@Override
 	public void init() {
 		dataSource.setDriverClassName("org.postgresql.Driver");
-		dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/sample_db");
+		dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/db3");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("2111976");
 	}

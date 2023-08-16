@@ -1,9 +1,9 @@
 package com.example;
 
 public class orderJsonModel {
-	int product_id;
-	int user_id;
-	int item_count;
+	int product_id = 0;
+	int user_id = 0;
+	int item_count = 0;
 
 	public orderJsonModel(int product_id, int user_id, int item_count) {
 		this.product_id = product_id;
